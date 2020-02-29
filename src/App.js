@@ -10,18 +10,21 @@ class App extends Component {
     super(props);
     this.state = {
       infoCharacterRaw: [],
-      infoCharacter: []
+      infoCharacter: [],
+      query: ''
     }
     this.sortByName = this.sortByName.bind(this);
+    this.filterByName = this.filterByName.bind(this);
+    this.filteredResults = this.filteredResults.bind(this);
   }
 
   componentDidMount() {
     serviceInfo()
     .then(data => { 
-      const infoCharacter = data.map((character) => character);
+      const infoCharacter = data.map((character) => character)
       this.setState({
         infoCharacterRaw: infoCharacter,
-        infoCharacter: [...infoCharacter]
+        infoCharacter: infoCharacter
       })
     })
   }
@@ -40,9 +43,27 @@ class App extends Component {
       })
     } else {
       this.setState({
-        infoCharacter: [...this.state.infoCharacterRaw]
+        infoCharacter: this.state.infoCharacterRaw
       })
     }
+  }
+
+  filterByName(event){
+    const inputValue = event.currentTarget.value
+    .toLowerCase()
+    .split(' ')
+    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+    .join(' ');
+    this.setState({
+      query: inputValue
+    })
+  }
+
+  filteredResults(){
+    const filteredResults = this.state.infoCharacter.filter(character => {
+      return ((character.name.includes(this.state.query))? true : false)
+    })
+    return filteredResults
   }
 
   render() {
@@ -59,6 +80,8 @@ class App extends Component {
                 <CharacterList
                   infoCharacter={this.state.infoCharacter}
                   sortByName={this.sortByName}
+                  filterByName={this.filterByName}
+                  filteredResults={this.filteredResults}
                 />
               }
             />

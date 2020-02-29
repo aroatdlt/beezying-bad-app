@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 
 class CharacterList extends Component {
   render() {
-    const { infoCharacter, sortByName } = this.props;
+    const { sortByName, filterByName, filteredResults } = this.props;
+    const filterCharacter = filteredResults();
     return (
       <React.Fragment>
         <form>
@@ -14,9 +15,11 @@ class CharacterList extends Component {
             <option value='no_order'>No order</option>
             <option value='title'>By Title</option>
           </select>
+          <label htmlFor='searchedName'>Search your favorite character</label>
+          <input type='text' id='searchedName' name='searchedName' onChange={filterByName}/>
         </form>
         <ul className='character_list'>
-          {infoCharacter.map(character => {
+          {filterCharacter.map(character => {
             return (
               <Link
                 key={character.char_id}
