@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.scss';
 import { serviceInfo } from './services/infoCharacters';
+import CharacterList from './components/CharacterList/CharacterList';
+import CharacterDetail from './components/CharacterDetail/CharacterDetail';
+import { Route, Switch } from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
@@ -20,34 +23,37 @@ class App extends Component {
     })
   }
 
+  getCharacter(id) {
+    const { infoCharacter } = this.state;
+    return infoCharacter.find(character => character.char_id === parseInt(id));
+  }
+
   render() {
-    const { infoCharacter } = this.state
     return(
       <div className='App'>
         <header className='App-header'>
           <h1 className='title'>Who is ... in Breaking Bad?</h1>
         </header>
-        <main>
-          <ul className='character_list'>
-            {infoCharacter.map((character) => {
-              return <li key={character.char_id} className='character_info'>
-              <h2 className='character_name'>{character.name}</h2>
-              <img className='character_photo' src={character.img} alt={character.name}/>
-              <ul className='character_details'>
-                <li className='occupation'>Ocuppation: {character.occupation}</li>
-                <li className='status'>Status: {character.status}</li>
-                <li className='nickname'>Nickname: {character.nickname}</li>
-                <li className='portrayed'>Portrayed: {character.portrayed}</li>
-                <p className='titleSeasons'>Seasons</p>
-                <ul>
-                  {character.appearance.map((seasons, key) => {
-                    return <li className='season' key={key}>{seasons}</li>
-                  })}
-                </ul>
-              </ul>
-            </li>
-            })}
-          </ul>
+        <main className='main'>
+          <Switch>
+            <Route exact
+              path='/'
+              render={props =>
+                <CharacterList
+                  infoCharacter={this.state.infoCharacter}
+                />
+              }
+            />
+            <Route exact
+              path='/:id'
+              render={props =>
+                <CharacterDetail
+                  {...props}
+                  characterInfo={this.getCharacter(props.match.params.id)}
+                />
+              }
+            />
+          </Switch>
         </main>
       </div>
     )
