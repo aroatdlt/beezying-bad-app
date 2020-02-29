@@ -9,16 +9,19 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      infoCharacterRaw: [],
       infoCharacter: []
     }
+    this.sortByName = this.sortByName.bind(this);
   }
 
   componentDidMount() {
     serviceInfo()
     .then(data => { 
-      const infoCharacter = data.map((character) => character)
+      const infoCharacter = data.map((character) => character);
       this.setState({
-        infoCharacter: infoCharacter
+        infoCharacterRaw: infoCharacter,
+        infoCharacter: [...infoCharacter]
       })
     })
   }
@@ -26,6 +29,20 @@ class App extends Component {
   getCharacter(id) {
     const { infoCharacter } = this.state;
     return infoCharacter.find(character => character.char_id === parseInt(id));
+  }
+
+  sortByName(event){
+    const byTitleOption = event.currentTarget.value;
+    if(byTitleOption === 'title'){
+      const sortByNameData = this.state.infoCharacter.sort((a, b) => (a.name > b.name)? 1 : ((a.name < b.name) ? -1 : 0));
+      this.setState({
+        infoCharacter: sortByNameData
+      })
+    } else {
+      this.setState({
+        infoCharacter: [...this.state.infoCharacterRaw]
+      })
+    }
   }
 
   render() {
@@ -41,6 +58,7 @@ class App extends Component {
               render={props =>
                 <CharacterList
                   infoCharacter={this.state.infoCharacter}
+                  sortByName={this.sortByName}
                 />
               }
             />
