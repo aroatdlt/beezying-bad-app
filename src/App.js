@@ -24,7 +24,7 @@ class App extends Component {
       const infoCharacter = data.map((character) => character)
       this.setState({
         infoCharacterRaw: infoCharacter,
-        infoCharacter: infoCharacter
+        infoCharacter: [...infoCharacter]
       })
     })
   }
@@ -42,8 +42,9 @@ class App extends Component {
         infoCharacter: sortByNameData
       })
     } else {
+      const resetInfoCharacter = this.state.infoCharacterRaw;
       this.setState({
-        infoCharacter: this.state.infoCharacterRaw
+        infoCharacter: [...resetInfoCharacter]
       })
     }
   }
@@ -78,7 +79,6 @@ class App extends Component {
               path='/'
               render={props =>
                 <CharacterList
-                  infoCharacter={this.state.infoCharacter}
                   sortByName={this.sortByName}
                   filterByName={this.filterByName}
                   filteredResults={this.filteredResults}
