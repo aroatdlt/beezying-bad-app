@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import './App.scss';
-import { serviceInfo } from './services/infoCharacters';
-import CharacterList from './components/CharacterList/CharacterList';
-import CharacterDetail from './components/CharacterDetail/CharacterDetail';
-import { Route, Switch } from 'react-router-dom';
+import React, { Component } from "react";
+import "./App.scss";
+import { serviceInfo } from "./services/infoCharacters";
+import CharacterList from "./components/CharacterList/CharacterList";
+import CharacterDetail from "./components/CharacterDetail/CharacterDetail";
+import { Route, Switch } from "react-router-dom";
 
 class App extends Component {
   constructor(props) {
@@ -12,22 +12,23 @@ class App extends Component {
       infoCharacterRaw: [],
       infoCharacter: [],
       getDetailCharacter: [],
-      query: ''
-    }
+      query: "",
+      status: ""
+    };
     this.sortByName = this.sortByName.bind(this);
     this.filterByName = this.filterByName.bind(this);
     this.filteredResults = this.filteredResults.bind(this);
+    this.filterByStatus = this.filterByStatus.bind(this);
   }
 
   componentDidMount() {
-    serviceInfo()
-    .then(data => { 
-      const infoCharacter = data.map((character) => character)
+    serviceInfo().then(data => {
+      const infoCharacter = data.map(character => character);
       this.setState({
         infoCharacterRaw: infoCharacter,
         infoCharacter: [...infoCharacter]
-      })
-    })
+      });
+    });
   }
 
   getCharacter(id) {
@@ -35,70 +36,99 @@ class App extends Component {
     return infoCharacter.find(character => character.char_id === parseInt(id));
   }
 
-  sortByName(event){
+  sortByName(event) {
     const byTitleOption = event.currentTarget.value;
-    if(byTitleOption === 'title'){
-      const sortByNameData = this.state.infoCharacter.sort((a, b) => (a.name > b.name)? 1 : ((a.name < b.name) ? -1 : 0));
+    if (byTitleOption === "title") {
+      const sortByNameData = this.state.infoCharacter.sort((a, b) =>
+        a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+      );
       this.setState({
         infoCharacter: sortByNameData
-      })
+      });
     } else {
       const resetInfoCharacter = this.state.infoCharacterRaw;
       this.setState({
         infoCharacter: [...resetInfoCharacter]
-      })
+      });
     }
   }
 
-  filterByName(event){
+  filterByName(event) {
     const inputValue = event.currentTarget.value
-    .toLowerCase()
-    .split(' ')
-    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-    .join(' ');
+      .toLowerCase()
+      .split(" ")
+      .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+      .join(" ");
     this.setState({
       query: inputValue
-    })
+    });
   }
 
-  filteredResults(){
-    const filteredResults = this.state.infoCharacter.filter(character => {
-      return ((character.name.includes(this.state.query))? true : false)
-    })
-    return filteredResults
+  filterByStatus(event) {
+    const selectedStatus = event.currentTarget.value
+      .toLowerCase()
+      .split(" ")
+      .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+      .join(" ");
+    if (event.currentTarget.checked) {
+      this.setState({
+        status: selectedStatus
+      });
+    } else {
+      this.setState({
+        status: ""
+      });
+    }
+  }
+
+  filteredResults() {
+    if (this.state.query) {
+      return this.state.infoCharacter.filter(character => {
+        return character.name.includes(this.state.query) ? true : false;
+      });
+    } else if (this.state.status) {
+      return this.state.infoCharacter.filter(character => {
+        return character.status.includes(this.state.status) ? true : false;
+      });
+    } else {
+      return this.state.infoCharacter;
+    }
   }
 
   render() {
-    return(
-      <div className='App'>
-        <header className='App-header'>
-          <h1 className='title'>Who is ... in Breaking Bad?</h1>
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h1 className="title">Who is ... in Breaking Bad?</h1>
         </header>
-        <main className='main'>
+        <main className="main">
           <Switch>
-            <Route exact
-              path='/'
-              render={props =>
+            <Route
+              exact
+              path="/"
+              render={props => (
                 <CharacterList
                   sortByName={this.sortByName}
                   filterByName={this.filterByName}
                   filteredResults={this.filteredResults}
+                  filterByStatus={this.filterByStatus}
                 />
-              }
+              )}
             />
-            <Route exact
-              path='/:id'
-              render={props =>
+            <Route
+              exact
+              path="/:id"
+              render={props => (
                 <CharacterDetail
                   {...props}
                   characterInfo={this.getCharacter(props.match.params.id)}
                 />
-              }
+              )}
             />
           </Switch>
         </main>
       </div>
-    )
+    );
   }
 }
 

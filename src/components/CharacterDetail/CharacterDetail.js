@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import "./characterdetail.scss";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import './characterdetail.scss';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class CharacterDetail extends Component {
   render() {
     if (!this.props.characterInfo) {
       return (
         <React.Fragment>
-        <p className="loader__detail">We are looking for this character...</p>
+        <p className='loader__detail'>'You know the business, I know chemistry' Walter White.</p>
       </React.Fragment>
       )
     } else {
@@ -23,19 +23,19 @@ class CharacterDetail extends Component {
       } = this.props.characterInfo;
       return (
         <React.Fragment>
-          <div className="character__info--card">
-            <p className="character_name">{name}</p>
-            <img className="character_photo" src={img} alt={name} />
-            <ul className="character_details">
-              <li className="occupation">Occupation: {occupation}</li>
-              <li className="status">Status: {status}</li>
-              <li className="nickname">Nickname: {nickname}</li>
-              <li className="portrayed">Portrayed: {portrayed}</li>
-              <p className="titleSeasons">Seasons</p>
+          <div className='character__info--card'>
+            <p className='character_name'>{name}</p>
+            <img className='character_photo' src={img} alt={name} />
+            <ul className='character_details'>
+              <li className='occupation'>Occupation: {occupation}</li>
+              <li className='status'>Status: {status}</li>
+              <li className='nickname'>Nickname: {nickname}</li>
+              <li className='portrayed'>Portrayed: {portrayed}</li>
+              <p className='titleSeasons'>Seasons</p>
               <ul>
                 {appearance.map((seasons, key) => {
                   return (
-                    <li className="season" key={key}>
+                    <li className='season' key={key}>
                       {seasons}
                     </li>
                   );

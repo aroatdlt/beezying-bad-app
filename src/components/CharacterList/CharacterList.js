@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 class CharacterList extends Component {
   render() {
-    const { sortByName, filterByName, filteredResults } = this.props;
+    const { sortByName, filterByName, filteredResults, filterByStatus } = this.props;
     const filterCharacter = filteredResults();
     return (
       <React.Fragment>
@@ -17,16 +17,10 @@ class CharacterList extends Component {
           </select>
           <label htmlFor='searchedName'>Search your favorite character</label>
           <input type='text' id='searchedName' name='searchedName' onChange={filterByName}/>
-          <label htmlFor="seasonOne"> Season 1 </label>
-          <input type="checkbox" id="season_one" name="seasonOne" value="seasonOne"/>
-          <label htmlFor="seasonTwo"> Season 2 </label>
-          <input type="checkbox" id="season_two" name="seasonTwo" value="seasonTwo"/>
-          <label htmlFor="seasonThree"> Season 3 </label>
-          <input type="checkbox" id="season_three" name="seasonThree" value="seasonThree"/>
-          <label htmlFor="seasonFour"> Season 4 </label>
-          <input type="checkbox" id="season_four" name="seasonFour" value="seasonFour"/>
-          <label htmlFor="seasonFive"> Season 5 </label>
-          <input type="checkbox" id="season_five" name="seasonFive" value="seasonFive"/>
+          <label htmlFor='alive'> Alive </label>
+          <input type='checkbox' id='alive' name='alive' value='alive' onClick={filterByStatus}/>
+          <label htmlFor='deceased'> Deceased </label>
+          <input type='checkbox' id='deceased' name='deceased' value='deceased'onClick={filterByStatus}/>
         </form>
         <ul className='character_list'>
           {filterCharacter.map(character => {
