@@ -11,6 +11,7 @@ class App extends Component {
     this.state = {
       infoCharacterRaw: [],
       infoCharacter: [],
+      getDetailCharacter: [],
       query: ''
     }
     this.sortByName = this.sortByName.bind(this);

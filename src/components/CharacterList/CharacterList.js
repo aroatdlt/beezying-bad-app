@@ -17,6 +17,16 @@ class CharacterList extends Component {
           </select>
           <label htmlFor='searchedName'>Search your favorite character</label>
           <input type='text' id='searchedName' name='searchedName' onChange={filterByName}/>
+          <label htmlFor="seasonOne"> Season 1 </label>
+          <input type="checkbox" id="season_one" name="seasonOne" value="seasonOne"/>
+          <label htmlFor="seasonTwo"> Season 2 </label>
+          <input type="checkbox" id="season_two" name="seasonTwo" value="seasonTwo"/>
+          <label htmlFor="seasonThree"> Season 3 </label>
+          <input type="checkbox" id="season_three" name="seasonThree" value="seasonThree"/>
+          <label htmlFor="seasonFour"> Season 4 </label>
+          <input type="checkbox" id="season_four" name="seasonFour" value="seasonFour"/>
+          <label htmlFor="seasonFive"> Season 5 </label>
+          <input type="checkbox" id="season_five" name="seasonFive" value="seasonFive"/>
         </form>
         <ul className='character_list'>
           {filterCharacter.map(character => {
