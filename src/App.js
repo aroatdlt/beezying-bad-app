@@ -13,7 +13,8 @@ class App extends Component {
       infoCharacter: [],
       getDetailCharacter: [],
       query: "",
-      status: ""
+      status: "",
+      loading: true
     };
     this.sortByName = this.sortByName.bind(this);
     this.filterByName = this.filterByName.bind(this);
@@ -26,7 +27,8 @@ class App extends Component {
       const infoCharacter = data.map(character => character);
       this.setState({
         infoCharacterRaw: infoCharacter,
-        infoCharacter: [...infoCharacter]
+        infoCharacter: [...infoCharacter],
+        loading: false
       });
     });
   }
@@ -112,6 +114,7 @@ class App extends Component {
                   filterByName={this.filterByName}
                   filteredResults={this.filteredResults}
                   filterByStatus={this.filterByStatus}
+                  loading={this.state.loading}
                 />
               )}
             />
